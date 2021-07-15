@@ -1,0 +1,6 @@
+docker build --tag dro-api .
+docker run --publish 8000:8000 dro-api
+
+docker-compose build
+docker-compose up
+python manage.py migrate
