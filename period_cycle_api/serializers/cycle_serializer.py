@@ -1,9 +1,11 @@
+from django.db import models
 from rest_framework import serializers
 
+from period_cycle_api.models import PeriodCylceModel
 
-class CycleSerializer(serializers.Serializer):
-    last_period_date = serializers.DateField()
-    cycle_average = serializers.CharField()
-    period_average = serializers.CharField()
-    start_date = serializers.DateField()
-    end_date = serializers.DateField()
+
+class CycleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PeriodCylceModel
+        fields = ['last_period_date', 'start_date','end_date',
+                  'cycle_average', 'period_average']
