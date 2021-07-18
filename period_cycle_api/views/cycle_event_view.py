@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
 from period_cycle_api.models import PeriodCylceModel
 from period_cycle_api.serializers.event_serializer import EventSerializer
-from period_cycle_api.lib.date_format import format_date
 
 
 class CycleEvent(APIView):
@@ -26,16 +26,50 @@ class CycleEvent(APIView):
 
         if serializer.is_valid():
             date = data.get('event_date', '')
-            date_obj = datetime.strptime(format_date(date), "%d/%m/%Y")
+            period_start_date = datetime.strptime(
+                str(self.last_period_date), "%Y-%m-%d")
 
-            days_range = self.end_date - self.start_date
-            period_start_date = datetime.strptime(self.last_period_date, "%d/%m/%Y") 
-            # period_end_date = period_start_date + self.period_average
+            start_end_day_diff = self.end_date - self.start_date
 
-            numbers_list = list(range(1, days_range.days + 1))
+            # List of numbers from the time range
+            cycle_list = [i for i in range(1, start_end_day_diff.days + 1) if i % (
+                int(self.cycle_average) + int(self.period_average)) == 0]
+            cycle_date_list = [str(self.last_period_date + timedelta(days=i)) for i in cycle_list]
 
-            ovulation_list = [numbers_list[i:self.cycle_average]
-                              for i in range(0, len(numbers_list), self.period_average)]
+            # get the list of ovulation dates
+            ovulation_list = [math.floor(
+                i + (self.cycle_average / 2)) for i in cycle_list]
+            ovulation_date_list = [str(self.start_date + timedelta(days=i)) for i in ovulation_list]
 
-            return Response({"date_obj": date_obj, "period_start_date": period_start_date})
-        return Response({"Info": "something else"})
+            # get the list of fertility window dates
+            fertility_window = []
+            for i in cycle_list:
+                fertility_window.append(str(self.start_date + timedelta(days=i + self.period_average + 4)))
+                fertility_window.append(str(self.start_date + timedelta(days=i - 4)))
+
+            events_dict = {
+                "fertility_window": fertility_window,
+                "ovulation_period": ovulation_date_list,
+                "mestral_cycle_starts": cycle_date_list
+            }
+
+            answer_dict = {}
+            if date in fertility_window:
+                answer_dict['event'] = "fertility window"
+                answer_dict["date"] = date
+            elif date in ovulation_date_list:
+                answer_dict['event'] = "ovulation period"
+                answer_dict["date"] = date
+            elif date in cycle_date_list:
+                answer_dict['event'] = "mentral cycle starts"
+                answer_dict["date"] = date
+            else:
+                answer_dict["event"] = "No event for this date"
+                answer_dict["date"] = date
+
+            test = fertility_window[0] == date
+            first_Date = fertility_window[0]
+            print("first date:", type(first_Date),  "date: ", type(date))
+
+            return Response([answer_dict])
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
