@@ -2,3 +2,4 @@ docker-compose build .
 docker-compose up
 python manage.py migrate
 docker-compose exec api python manage.py test project
+docker compose exec api python manage.py test app/

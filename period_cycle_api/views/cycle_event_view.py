@@ -20,12 +20,10 @@ class CycleEvent(APIView):
     period_average = db_data.period_average
     total_created_cycle = db_data.total_created_cycle
 
-    def post(self, request):
-        data = request.data
-        serializer = self.serializer_class(data=data)
-
-        if serializer.is_valid():
-            date = data.get('event_date', '')
+    def get(self, request):
+        date = request.GET.get('date')
+        
+        if date:
             period_start_date = datetime.strptime(
                 str(self.last_period_date), "%Y-%m-%d")
 
@@ -67,9 +65,5 @@ class CycleEvent(APIView):
                 answer_dict["event"] = "No event for this date"
                 answer_dict["date"] = date
 
-            test = fertility_window[0] == date
-            first_Date = fertility_window[0]
-            print("first date:", type(first_Date),  "date: ", type(date))
-
             return Response([answer_dict])
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error":"Please input a valid date"}, status=status.HTTP_400_BAD_REQUEST)

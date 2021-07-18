@@ -12,8 +12,36 @@ API Service backing client interfaces
 * [Docker Engine and Docker Compose](https://www.docker.com/) : Containerization of the application and services orchestration
 
 ## Description
+There are two main endpoints for this api,
+- `http://127.0.0.1:8000/womens-health/api/create-cycles`, this endpoint takes a POST request with the following expected values
+```
+{
+  “Last_period_date”:”2020-06-20”
+  “Cycle_average”:25
+  “Period_average”:5
+  “Start_date”:”2020-07-25”,
+  “end_date”:”2021-07-25”
+}
+```
+the endpoint calculates the amount of menstral cycles expected based on the time range given combined with cycle_average and period_average.
+Expected response
+```
+{
+    "total_created_cycles": 12
+}
+```
 
+-`http://127.0.0.1:8000/womens-health/api/cycle-event/?date=2021-08-14`, this endpoint takes a query parameter `date` which is equals to a particular date of which is expected to return an event occuring on the particular date given based on the parameters given for the first endpoint.
 
+Expected response
+```
+[
+    {
+        "event": "mentral cycle starts",
+        "date": "2021-08-14"
+    }
+]
+```
 ## Getting Started
 
 Getting started with this project is very simple, all you need is to have Git and Docker Engine installed on your machine. Then open up your terminal and run this command `git clone https://github.com/funsojoba/DRO-Health-API.git` to clone the project repository.
