@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 *migrations/
 period_cycle_api/migrations/
+migrations/
 
 # C extensions
 *.so

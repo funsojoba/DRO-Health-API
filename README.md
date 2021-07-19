@@ -61,7 +61,7 @@ In summary, these are the lists of commands to run in listed order, to start up 
 4. docker-compose up
 5. python manage.py makemigrations
 6. python manage.py migrate
-7. user ctrl+c to quit server
+7. use ctrl+c to quit server
 ```
 
 ## Running Tests
