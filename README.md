@@ -31,7 +31,7 @@ Expected response
 }
 ```
 
-- The second endpoint `http://127.0.0.1:8000/womens-health/api/cycle-event/?date=2021-08-14`, this endpoint takes a query parameter `date` which is equals to a particular date of which is expected to return an event occuring on the particular date given based on the parameters given for the first endpoint.
+- The second endpoint `http://127.0.0.1:8000/womens-health/api/cycle-event/?date=2021-08-14`, this endpoint takes a query parameter `date` which is equal to a particular date of which is expected to return an event occuring on the particular date given based on the parameters given for the first endpoint.
 
 Expected response
 ```
