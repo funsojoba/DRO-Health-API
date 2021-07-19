@@ -62,7 +62,7 @@ class CycleEvent(APIView):
                 answer_dict['event'] = "mentral cycle starts"
                 answer_dict["date"] = date
             else:
-                answer_dict["event"] = "No event for this date"
+                answer_dict["event"] = "pre-ovulation window"
                 answer_dict["date"] = date
 
             return Response([answer_dict])

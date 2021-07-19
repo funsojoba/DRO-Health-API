@@ -61,14 +61,15 @@ In summary, these are the lists of commands to run in listed order, to start up 
 4. docker-compose up
 5. python manage.py makemigrations
 6. python manage.py migrate
+7. user ctrl+c to quit server
 ```
 
 ## Running Tests
 
 Currently, truthy tests has been provided in each of the application defined in the project, before running the tests with the following command make sure that your api service is up and running.
 
-```docker
-python manage.py test
+Run 
+```docker-compose exec api python manage.py test DRO_project
 ```
 
 ## License
